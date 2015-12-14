@@ -65,7 +65,7 @@ def readFile (filename):
 #-------------------------------------------
 
 def readConsole(prompt='Please type/paste content:', required=True, bool=False):
-  content = raw_input(prompt)
+  content = input(prompt)
   if len( content.strip() ) == 0 and required == True:
     content = readConsole (prompt, required, bool)
   if bool:
