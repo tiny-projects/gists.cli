@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-
-import os, log, sys, defaults, platform
+from __future__ import absolute_import
+from __future__ import print_function
+import os, sys, platform
+from . import defaults,log
 
 #-------------------------------------------
 
@@ -136,27 +138,27 @@ def isFile (obj):
 #-------------------------------------------
 
 def line (msg=""):
-  print "------------------------------------------------------------------------------------------" + msg
+  print("------------------------------------------------------------------------------------------" + msg)
 
 #-------------------------------------------
 
 if __name__ == '__main__':
-  print ''
-  print 'parseBool'
-  print ''
-  print parseBool(1)
-  print parseBool(0)
-  print parseBool('true')
-  print parseBool('false')
-  print parseBool('Yes')
-  print parseBool('no')
-  print parseBool('1')
-  print parseBool('what?')
-  print parseBool(' ')
-  print ''
-  print 'isFile'
-  print ''
-  print isFile('')
-  print isFile('My Name is')
-  print isFile('/usr')
-  print isFile('util.py')
+  print('')
+  print('parseBool')
+  print('')
+  print(parseBool(1))
+  print(parseBool(0))
+  print(parseBool('true'))
+  print(parseBool('false'))
+  print(parseBool('Yes'))
+  print(parseBool('no'))
+  print(parseBool('1'))
+  print(parseBool('what?'))
+  print(parseBool(' '))
+  print('')
+  print('isFile')
+  print('')
+  print(isFile(''))
+  print(isFile('My Name is'))
+  print(isFile('/usr'))
+  print(isFile('util.py'))
