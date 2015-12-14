@@ -50,7 +50,7 @@ def getCredentials ():
     log.debug ("Credentials: " + HOME + CREDENTIALS + " = " + token)
   elif username == None or password == None:
     log.debug ("Credentials: No token found.")
-    username = raw_input("Username: ")
+    username = input("Username: ")
     password = getpass.getpass()
     token = None
     auth(username, password)
