@@ -77,10 +77,10 @@ def list ():
       private_count += 1
     table.add_row( [i+1, file_list, str(gist['public']), gist['id'], gist['description']] )
 
-  print table.draw()
+  print(table.draw())
 
-  print ''
-  print "You have %i Gists. (%i Private)" % (len(gists), private_count)
+  print('')
+  print("You have %i Gists. (%i Private)" % (len(gists), private_count))
 
 #-------------------------------------------
 
@@ -104,7 +104,7 @@ def new (public=None,description=None,content=None,filename=None):
     if os.path.isfile( filename ):
       content = util.readFile(filename)
     else:
-      print "Sorry, filename '{0}' is actually a Directory.".format(filename)
+      print("Sorry, filename '{0}' is actually a Directory.".format(filename))
       sys.exit(0)
 
   if content == None:
@@ -125,7 +125,7 @@ def new (public=None,description=None,content=None,filename=None):
   gist = api.post(url, data=data)
 
   pub_str = 'Public' if gist['public'] else 'Private'
-  print "{0} Gist created:Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url'])
+  print("{0} Gist created:Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url']))
 
 
 #-------------------------------------------
@@ -150,17 +150,17 @@ def view (id, fileName=''):
     gist = _get_gist(id)
     # display line delims only if more than one file exists. facilitates piping file content
     noDelim = len(gist['files']) == 1 or fileName != ''
-    for (file, data) in gist['files'].items():
+    for (file, data) in list(gist['files'].items()):
       content = data['content']
       if not noDelim:
         util.line()
-        print 'Gist: {0} File: {1}'.format(id, file)
+        print('Gist: {0} File: {1}'.format(id, file))
         util.line()
       if fileName != '':
         if fileName.strip().lower() == file.strip().lower():
-          print content
+          print(content)
       else:
-        print content
+        print(content)
       if not noDelim:
         util.line()
 
@@ -176,9 +176,9 @@ def get (id, path, fileName=''):
     gist = _get_gist(id)
     target = os.path.join(path,id)
 
-    print ('Gist \'{0}\' has {1} file(s)'.format(id, len(gist['files'])))
+    print(('Gist \'{0}\' has {1} file(s)'.format(id, len(gist['files']))))
     for file in gist['files']:
-      print ('  ' + file)
+      print(('  ' + file))
     dmsg = 'file(s)' if fileName == '' else "'" + fileName + "'"
     confirm = util.readConsole(prompt="Download {0} to (1) '{1}/' or (2) '{2}/'?: ".format(dmsg, path, target))
     if confirm in ('1', '2'):
@@ -190,7 +190,7 @@ def get (id, path, fileName=''):
           target = path
         else:
           os.makedirs(target)
-        for (file, data) in gist['files'].items():
+        for (file, data) in list(gist['files'].items()):
           downLoadFile = False
           if fileName != '':
             if fileName.strip().lower() == file.strip().lower():
@@ -205,12 +205,12 @@ def get (id, path, fileName=''):
             file.close()
             filesDownloaded += 1
             log.debug( 'Saved file:' + filepath )
-        print ('{0} File(s) downloaded.'.format(filesDownloaded))
+        print(('{0} File(s) downloaded.'.format(filesDownloaded)))
       except Exception as e:
-        print "Insufficient privilages to write to %s." % target
-        print "Error message: " + str(e)
+        print("Insufficient privilages to write to %s." % target)
+        print("Error message: " + str(e))
     else:
-      print 'Ok. I won\'t download the Gist.'
+      print('Ok. I won\'t download the Gist.')
 
 
 #-------------------------------------------
@@ -232,7 +232,7 @@ def append (id, description=None,content=None,filename=None):
     if os.path.isfile( filename ):
       content = util.readFile(filename)
     else:
-      print "Sorry, filename '{0}' is actually a Directory.".format(filename)
+      print("Sorry, filename '{0}' is actually a Directory.".format(filename))
       sys.exit(0)
 
   if content == None:
@@ -251,7 +251,7 @@ def append (id, description=None,content=None,filename=None):
   if description and description != '?':
     oldgist['description'] = description
   if content and content != '?':
-    for (file, data) in oldgist['files'].items():
+    for (file, data) in list(oldgist['files'].items()):
       oldgist['files'][file]['content'] = data['content'] + '\n' + content
   log.debug ('Data: ' + str(oldgist))
 
@@ -259,7 +259,7 @@ def append (id, description=None,content=None,filename=None):
   gist = api.patch(url, data=oldgist)
 
   pub_str = 'Public' if gist['public'] else 'Private'
-  print "{0} Gist appended: Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url'])
+  print("{0} Gist appended: Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url']))
 
 
 #-------------------------------------------
@@ -281,7 +281,7 @@ def update (id, description=None,content=None,filename=None):
     if os.path.isfile( filename ):
       content = util.readFile(filename)
     else:
-      print "Sorry, filename '{0}' is actually a Directory.".format(filename)
+      print("Sorry, filename '{0}' is actually a Directory.".format(filename))
       sys.exit(0)
 
   if content == None:
@@ -306,7 +306,7 @@ def update (id, description=None,content=None,filename=None):
   gist = api.patch(url, data=data)
 
   pub_str = 'Public' if gist['public'] else 'Private'
-  print "{0} Gist updated: Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url'])
+  print("{0} Gist updated: Id '{1}' and Url: {2}".format(pub_str, gist['id'], gist['html_url']))
 
 #-------------------------------------------
 
@@ -322,17 +322,17 @@ def delete (id):
   if _supress == False:
     gist = _get_gist(id)
 
-    print ('Gist \'{0}\'  Description: {1}'.format(id, gist['description']))
+    print(('Gist \'{0}\'  Description: {1}'.format(id, gist['description'])))
     for file in gist['files']:
-      print ('  ' + file)
+      print(('  ' + file))
     confirm = util.parseBool( util.readConsole(prompt='Delete Gist? (y/n):', required=False, bool=True) )
 
   if confirm:
     url = '/gists/' + id
     api.delete(url)
-    print 'Gist deleted: {0}'.format(id)
+    print('Gist deleted: {0}'.format(id))
   else:
-    print 'I did not delete the Gist.'
+    print('I did not delete the Gist.')
 
 #-------------------------------------------
 
@@ -360,14 +360,14 @@ def _getHelpTableRow (action, args='', help=''):
 def help ():
   log.debug ("Help command.")
 
-  print 'Gists.CLI'
-  print ''
-  print textwrap.fill('An easy to use CLI to manage your GitHub Gists. Create, edit, append, view, search and backup your Gists.', defaults.max_width)
-  print ''
-  print 'Author: Nik Khilnani - https://github.com/khilnani/gists.cli'
-  print ''
-  print "Note - GIST_ID can be a Gist ID or Index ID (of the Gist in the List view)."
-  print "Index is 1 based and must be in the format '#N', '%N' , '.N' or ':N'."
+  print('Gists.CLI')
+  print('')
+  print(textwrap.fill('An easy to use CLI to manage your GitHub Gists. Create, edit, append, view, search and backup your Gists.', defaults.max_width))
+  print('')
+  print('Author: Nik Khilnani - https://github.com/khilnani/gists.cli')
+  print('')
+  print("Note - GIST_ID can be a Gist ID or Index ID (of the Gist in the List view).")
+  print("Index is 1 based and must be in the format '#N', '%N' , '.N' or ':N'.")
 
   table = Texttable(max_width=defaults.max_width)
   table.set_deco(Texttable.HEADER | Texttable.HLINES)
@@ -402,7 +402,7 @@ def help ():
 
   table.add_row( _getHelpTableRow("Debug", help='Output Debug info. NOTE - Reveals sesnitive info such as OAuth tokens.') )
 
-  print table.draw()
+  print(table.draw())
 
 #-------------------------------------------
 
