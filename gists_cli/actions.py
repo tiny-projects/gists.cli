@@ -153,6 +153,7 @@ def open(id):
   log.debug("open Gist with ID: {0} ".format(id))
 
   if id[0] in _cmds['#']:
+    api.getCredentials()
     id = _get_id_for_index(id)
 
   if id:
@@ -405,6 +406,9 @@ def help ():
   table.add_row( _getHelpTableRow("List", help='Lists your public and private Gists.') )
 
   table.add_row( _getHelpTableRow("View", "GIST_ID|'.'INDEX [FILE]", help="Displays contents of a Gist on screen. To view a specific file, specify [FILE]. Instead of the Gist ID, the (1 based) index of the Gist in the List screen can be used. eg. %1, .1, :1 or '#1'") )
+
+
+  table.add_row( _getHelpTableRow("Open", "GIST_ID|'.'INDEX [FILE]", help=" ") )
 
   table.add_row( _getHelpTableRow("Download", "GIST_ID|'.'INDEX PATH [FILE]", help="Get or Download the files in a Gist to (1) Current Directory, or (2) Directory with Gist ID as its name. To download a specific file, specify [FILE]. Instead of the Gist ID, the (1 based) index of the Gist in the List screen can be used. eg. %1, .1, :1 or '#1'") )
 
