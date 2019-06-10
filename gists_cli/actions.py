@@ -1,7 +1,16 @@
 #!/usr/bin/env python
 
-import sys, api, log, util, os, defaults, textwrap
+import os
+import sys
+import textwrap
+from subprocess import call
+
 from texttable import Texttable
+
+import api
+import log
+import util
+import defaults
 
 #-------------------------------------------
 
@@ -41,7 +50,7 @@ def _get_id_for_index(id):
     url = "/gists"
     gists = api.get(url)
     for (i, gist) in enumerate(gists):
-      log.debug("Checking...  gist {0} at index: {1} == {2} ?".format(gist['id'], (i+1), index)) 
+      log.debug("Checking...  gist {0} at index: {1} == {2} ?".format(gist['id'], (i+1), index))
       if i+1 == index:
         _id = gist['id']
         log.debug("Found Gist: {0} at index: {1}".format(_id, index))
@@ -70,7 +79,7 @@ def list ():
     private = False
     file_list = ''
     for (file, data) in gist['files'].items():
-      file_list += "'" + file + "' " 
+      file_list += "'" + file + "' "
     if gist['public']:
       public_count += 1
     else:
@@ -132,7 +141,7 @@ def new (public=None,description=None,content=None,filename=None):
 
 def _get_gist(id):
   api.getCredentials()
-  log.debug ("Internal: _get_gist: " + id) 
+  log.debug ("Internal: _get_gist: " + id)
 
   url = "/gists/" + id
   gist = api.get(url)
@@ -140,7 +149,20 @@ def _get_gist(id):
 
 #-------------------------------------------
 
-def view (id, fileName=''): 
+def open(id):
+  log.debug("open Gist with ID: {0} ".format(id))
+
+  if id[0] in _cmds['#']:
+    id = _get_id_for_index(id)
+
+  if id:
+    gist = _get_gist(id)
+    html_url = gist['html_url']
+    log.debug("open Gist html_url : {0}".format(html_url))
+    call(["open", html_url])
+
+
+def view (id, fileName=''):
   log.debug("Viewing Gist with ID: {0} and fileName: '{1}'".format(id,fileName))
 
   if id[0] in _cmds['#']:
@@ -245,9 +267,9 @@ def append (id, description=None,content=None,filename=None):
     filename = defaults.file
 
   log.debug ("Appending Gist " + id + " with content: \n" + content)
-  
+
   oldgist = _get_gist(id)
-  
+
   if description and description != '?':
     oldgist['description'] = description
   if content and content != '?':
@@ -318,7 +340,7 @@ def delete (id):
     id = _get_id_for_index(id)
 
   confirm = defaults.forceDelete
-  
+
   if _supress == False:
     gist = _get_gist(id)
 
@@ -354,7 +376,7 @@ def _getHelpTableRow (action, args='', help=''):
   l.append(util.fileName + ' ' + '|'.join(_cmds[action]) + ' ' + args)
   l.append(help)
   return l
-  
+
 #-------------------------------------------
 
 def help ():
@@ -375,7 +397,7 @@ def help ():
   table.set_cols_width([8, 45, 37])
 
   table.header( ["Action","Usage", "Description"] )
-  
+
   table.add_row( _getHelpTableRow("Help", help='Display the help documentation') )
 
   table.add_row( _getHelpTableRow("Token", 'TOKEN', help='Save your Github  OAuth Token. Will be prefeered over ~/.git-credentials to avoid user/password prompts. Saves to ~/.gists') )
@@ -405,4 +427,3 @@ def help ():
   print(table.draw())
 
 #-------------------------------------------
-

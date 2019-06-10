@@ -11,7 +11,7 @@ max_width = 100
 forceDelete = True
 
 cmds = {}
-cmds['#'] = ['#','.','%',':']
+cmds['#'] = ['#','.','%',':','-']
 cmds['Help'] = ["help", "--help", "h", "-h"]
 cmds['Token'] = ["token", "--token", "t", "-t"]
 cmds['List'] = ["list", "--list", "l", "-l"]
@@ -21,6 +21,7 @@ cmds['Update'] = ["update", "--update", "u", "-u"]
 cmds['Append'] = ["append", "--append", "a", "-a"]
 cmds['Delete'] = ["delete", "--delete", "del", "--del", "d", "-d"]
 cmds['Backup'] = ["backup", "--backup", "b", "-b"]
+cmds['Open'] = ["open", "--open", "o", "-o"]
 cmds['Search'] = ["search", "--search", "query", "--query", "q", "-q"]
 cmds['New'] = ["new", "--new", "n", "-n", "create", "--create", "c", "-c"]
 cmds['Debug'] = ["debug","--debug"]
