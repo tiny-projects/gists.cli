@@ -48,9 +48,9 @@ In addition to conventional view, download, edit and delete support, the applica
 
 - install with github
 
-  - pip install git+https://github.com/jiahut/gists.cli
+  - pip install `git+https://github.com/jiahut/gists.cli`
 
-  - pip install --upgrade https://github.com/jiahut/gists.cli/tarball/master
+  - pip install --upgrade `https://github.com/jiahut/gists.cli/tarball/master`
 
 - support open gist at browser
 
